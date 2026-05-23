@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Certificate {{ cert.certificate_code }}{% endblock %}
+{% block content %}
+<section class="certificate-page">
+    <div class="certificate">
+        <p class="eyebrow">Certificate of Completion</p>
+        <h1>{{ cert.name }}</h1>
+        <p>has successfully completed</p>
+        <h2>{{ cert.title }}</h2>
+        <p>provided by {{ cert.company }}</p>
+        <div class="certificate-footer">
+            <span>Issued: {{ cert.issued_at[:10] }}</span>
+            <span>Code: {{ cert.certificate_code }}</span>
+        </div>
+    </div>
+</section>
+{% endblock %}

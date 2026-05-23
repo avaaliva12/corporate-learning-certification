@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Courses{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="section-heading">
+        <p class="eyebrow">Catalog</p>
+        <h1>Company Courses</h1>
+    </div>
+    <div class="grid cards">
+        {% for course in courses %}
+            <article class="card">
+                <p class="pill">{{ course.category }}</p>
+                <h2>{{ course.title }}</h2>
+                <p>{{ course.description }}</p>
+                <div class="meta">{{ course.company }} · {{ course.duration }}</div>
+                <div class="actions">
+                    <a class="button" href="{{ url_for('course_detail', course_id=course.id) }}">Details</a>
+                    {% if course.id in enrolled_ids %}
+                        <span class="status success">Enrolled</span>
+                    {% endif %}
+                </div>
+            </article>
+        {% else %}
+            <p>No active courses are available.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

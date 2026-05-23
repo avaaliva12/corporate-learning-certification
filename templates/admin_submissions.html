@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Review Submissions{% endblock %}
+{% block content %}
+<section class="section">
+    <div class="section-heading">
+        <p class="eyebrow">Admin</p>
+        <h1>Project Submissions</h1>
+    </div>
+    <div class="grid cards">
+        {% for submission in submissions %}
+            <article class="card">
+                <p class="pill">{{ submission.status }}</p>
+                <h2>{{ submission.project_title }}</h2>
+                <p>{{ submission.name }} · {{ submission.course_title }}</p>
+                <p class="muted">{{ submission.notes }}</p>
+                <a class="text-link" href="{{ submission.project_url }}" target="_blank" rel="noreferrer">Open project</a>
+                <form method="post" action="{{ url_for('review_submission', submission_id=submission.id) }}">
+                    <label>Feedback
+                        <textarea name="feedback" rows="3">{{ submission.feedback or '' }}</textarea>
+                    </label>
+                    <div class="actions">
+                        <button class="button" name="action" value="approve" type="submit">Approve</button>
+                        <button class="button danger" name="action" value="reject" type="submit">Reject</button>
+                    </div>
+                </form>
+            </article>
+        {% else %}
+            <p>No submissions yet.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

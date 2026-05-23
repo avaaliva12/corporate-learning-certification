@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Corporate Learning and Certification Portal{% endblock %}
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Integrated learning workflow</p>
+        <h1>Corporate Learning and Certification Portal</h1>
+        <p class="hero-copy">Enroll students, publish learning resources, track progress, collect project submissions, and issue verifiable certificates from one Flask-powered platform.</p>
+        <div class="actions">
+            <a class="button large" href="{{ url_for('courses') }}">Browse Courses</a>
+            <a class="button ghost large" href="{{ url_for('login') }}">Sign In</a>
+        </div>
+    </div>
+    <div class="hero-panel">
+        <div class="metric"><strong>Courses</strong><span>Company training programs</span></div>
+        <div class="metric"><strong>Submissions</strong><span>Admin review queue</span></div>
+        <div class="metric"><strong>Certificates</strong><span>Verified completion codes</span></div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section-heading">
+        <p class="eyebrow">Featured</p>
+        <h2>Available Programs</h2>
+    </div>
+    <div class="grid cards">
+        {% for course in courses %}
+            <article class="card">
+                <p class="pill">{{ course.category }}</p>
+                <h3>{{ course.title }}</h3>
+                <p>{{ course.description }}</p>
+                <div class="meta">{{ course.company }} · {{ course.duration }}</div>
+                <a class="text-link" href="{{ url_for('course_detail', course_id=course.id) }}">View course</a>
+            </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

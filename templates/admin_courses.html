@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Manage Courses{% endblock %}
+{% block content %}
+<section class="section two-column">
+    <form class="panel" method="post">
+        <h1>Create Course</h1>
+        <label>Title<input type="text" name="title" required></label>
+        <label>Company<input type="text" name="company" required></label>
+        <label>Category<input type="text" name="category" required></label>
+        <label>Duration<input type="text" name="duration" required></label>
+        <label>Description<textarea name="description" rows="5" required></textarea></label>
+        <button class="button" type="submit">Create</button>
+    </form>
+    <div class="panel">
+        <h1>Courses</h1>
+        <div class="list">
+            {% for course in courses %}
+                <a class="list-item" href="{{ url_for('admin_course_detail', course_id=course.id) }}">
+                    <strong>{{ course.title }}</strong>
+                    <span>{{ course.company }} · {{ course.category }}</span>
+                </a>
+            {% else %}
+                <p>No courses created.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

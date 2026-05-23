@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<section class="auth">
+    <form class="form-card" method="post">
+        <h1>Sign in</h1>
+        <label>Email
+            <input type="email" name="email" required>
+        </label>
+        <label>Password
+            <input type="password" name="password" required>
+        </label>
+        <button class="button full" type="submit">Login</button>
+        <p class="muted">Admin: admin@portal.com / admin123</p>
+        <p class="muted">Student: student@example.com / student123</p>
+    </form>
+</section>
+{% endblock %}

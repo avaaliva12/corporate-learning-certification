@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Corporate Learning Portal{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <a class="brand" href="{{ url_for('index') }}">
+            <span class="brand-mark">CL</span>
+            <span>Corporate Learning</span>
+        </a>
+        <nav>
+            <a href="{{ url_for('courses') }}">Courses</a>
+            {% if g.user %}
+                {% if g.user.role == 'admin' %}
+                    <a href="{{ url_for('admin_dashboard') }}">Admin</a>
+                    <a href="{{ url_for('admin_courses') }}">Manage Courses</a>
+                    <a href="{{ url_for('admin_submissions') }}">Submissions</a>
+                {% else %}
+                    <a href="{{ url_for('student_dashboard') }}">Dashboard</a>
+                {% endif %}
+                <span class="nav-user">{{ g.user.name }}</span>
+                <a class="button ghost" href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a class="button" href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <section class="flash-wrap">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </section>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

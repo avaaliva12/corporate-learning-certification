@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ course.title }} Admin{% endblock %}
+{% block content %}
+<section class="section">
+    <p class="eyebrow">{{ course.company }}</p>
+    <h1>{{ course.title }}</h1>
+    <p class="lead">{{ course.description }}</p>
+</section>
+<section class="section two-column compact-top">
+    <form class="panel" method="post" action="{{ url_for('add_material', course_id=course.id) }}">
+        <h2>Add Material</h2>
+        <label>Title<input type="text" name="title" required></label>
+        <label>Resource URL<input type="url" name="resource_url" required></label>
+        <label>Type<input type="text" name="resource_type" placeholder="Reading, Video, Guide" required></label>
+        <button class="button" type="submit">Add Material</button>
+    </form>
+    <div class="panel">
+        <h2>Materials</h2>
+        <div class="list">
+            {% for material in materials %}
+                <a class="list-item" href="{{ material.resource_url }}" target="_blank" rel="noreferrer">
+                    <strong>{{ material.title }}</strong>
+                    <span>{{ material.resource_type }}</span>
+                </a>
+            {% else %}
+                <p>No materials yet.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<section class="section compact-top">
+    <div class="table-wrap">
+        <h2>Enrolled Students</h2>
+        <table>
+            <thead><tr><th>Student</th><th>Email</th><th>Progress</th><th>Status</th><th>Submission</th></tr></thead>
+            <tbody>
+                {% for row in enrollments %}
+                    <tr><td>{{ row.name }}</td><td>{{ row.email }}</td><td>{{ row.progress }}%</td><td>{{ row.status }}</td><td>{{ row.submission_status or 'Not submitted' }}</td></tr>
+                {% else %}
+                    <tr><td colspan="5">No students enrolled.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

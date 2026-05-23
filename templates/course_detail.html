@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}{{ course.title }}{% endblock %}
+{% block content %}
+<section class="section split">
+    <div>
+        <p class="eyebrow">{{ course.company }}</p>
+        <h1>{{ course.title }}</h1>
+        <p class="lead">{{ course.description }}</p>
+        <div class="meta">{{ course.category }} · {{ course.duration }}</div>
+
+        {% if g.user and g.user.role == 'student' %}
+            {% if enrollment %}
+                <div class="panel">
+                    <h2>Your Progress</h2>
+                    <div class="progress"><span style="width: {{ enrollment.progress }}%"></span></div>
+                    <form method="post" action="{{ url_for('update_progress', enrollment_id=enrollment.id) }}" class="inline-form">
+                        <input type="number" name="progress" min="0" max="100" value="{{ enrollment.progress }}">
+                        <button class="button" type="submit">Update</button>
+                    </form>
+                </div>
+            {% else %}
+                <form method="post" action="{{ url_for('enroll', course_id=course.id) }}">
+                    <button class="button large" type="submit">Enroll Now</button>
+                </form>
+            {% endif %}
+        {% elif not g.user %}
+            <a class="button large" href="{{ url_for('login') }}">Login to enroll</a>
+        {% endif %}
+    </div>
+
+    <aside class="panel">
+        <h2>Learning Materials</h2>
+        <div class="list">
+            {% for material in materials %}
+                <a class="list-item" href="{{ material.resource_url }}" target="_blank" rel="noreferrer">
+                    <strong>{{ material.title }}</strong>
+                    <span>{{ material.resource_type }}</span>
+                </a>
+            {% else %}
+                <p class="muted">Materials will be added soon.</p>
+            {% endfor %}
+        </div>
+    </aside>
+</section>
+
+{% if enrollment %}
+<section class="section two-column">
+    <div class="panel">
+        <h2>Project Submission</h2>
+        {% if submission %}
+            <p class="status {{ submission.status }}">{{ submission.status|title }}</p>
+            {% if submission.feedback %}<p class="muted">Feedback: {{ submission.feedback }}</p>{% endif %}
+        {% endif %}
+        <form method="post" action="{{ url_for('submit_project', enrollment_id=enrollment.id) }}">
+            <label>Project title
+                <input type="text" name="project_title" value="{{ submission.project_title if submission else '' }}" required>
+            </label>
+            <label>Project URL
+                <input type="url" name="project_url" value="{{ submission.project_url if submission else '' }}" required>
+            </label>
+            <label>Notes
+                <textarea name="notes" rows="4">{{ submission.notes if submission else '' }}</textarea>
+            </label>
+            <button class="button" type="submit">Submit Project</button>
+        </form>
+    </div>
+    <div class="panel certificate-mini">
+        <h2>Certificate</h2>
+        {% if certificate %}
+            <p>Your certificate is ready.</p>
+            <a class="button" href="{{ url_for('certificate', code=certificate.certificate_code) }}">View Certificate</a>
+        {% else %}
+            <p class="muted">A verified certificate is issued after admin approval.</p>
+        {% endif %}
+    </div>
+</section>
+{% endif %}
+{% endblock %}
